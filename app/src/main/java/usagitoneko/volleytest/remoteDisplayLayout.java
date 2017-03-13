@@ -1,6 +1,7 @@
 package usagitoneko.volleytest;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,8 +21,9 @@ import org.json.JSONObject;
 import json2view.DynamicView;
 
 
-public class remoteDisplayLayout extends Activity {
+public class remoteDisplayLayout extends Fragment {
 
+    public remoteDisplayLayout(){};
     public interface VolleyCallback{
         void onSuccess(JSONObject result, View sampleView);
     }
@@ -39,7 +41,7 @@ public class remoteDisplayLayout extends Activity {
                     public void onResponse(JSONObject response) {
                         //mTextView.setText("Response: " + response.toString());
                         //mgsonResponse = mGson.fromJson(response.toString(),GsonResponse.class);
-                        View sampleView = DynamicView.createView(remoteDisplayLayout.this, response, ViewIds.SampleViewHolder.class);
+                        View sampleView = DynamicView.createView(getActivity(), response, ViewIds.SampleViewHolder.class);
                         sampleView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
                         volleyCallback.onSuccess(response, sampleView);
                         //setContentView(sampleView);
@@ -53,6 +55,36 @@ public class remoteDisplayLayout extends Activity {
 
                     }
                 });
-        MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+        MySingleton.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Activity a;
+        if(context instanceof Activity){
+            a = (Activity) context;
+        }
+        else{
+            a= null;
+        }
+        try{
+            volleyCallback = (VolleyCallback) a;
+        }catch(ClassCastException e){
+            throw new ClassCastException(context.toString()+ "must implement onSomeEventListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        volleyCallback = null;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.remote_display_layout, container, false);
+        return view;
     }
 }
