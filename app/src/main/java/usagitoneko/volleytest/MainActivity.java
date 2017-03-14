@@ -3,8 +3,6 @@ package usagitoneko.volleytest;
 import android.app.DownloadManager;
 import android.graphics.Color;
 import android.support.annotation.MainThread;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements remoteDisplayLayo
     Gson mGson;
    // GsonResponse mgsonResponse;
     JSONObject mJSONObject;
+    public interface VolleyCallback{
+        void onSuccess(JSONObject result, View sampleView);
+    }
 
     @Override
     public void onSuccess(JSONObject result, View sampleView) {
@@ -50,24 +51,51 @@ public class MainActivity extends AppCompatActivity implements remoteDisplayLayo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        FragmentManager fManager = getSupportFragmentManager();
-        Fragment frag = fManager.findFragmentById(R.id.remoteLayout);
-        if(frag == null){
-            frag = new remoteDisplayLayout();
-            fManager.beginTransaction().add(R.id.remoteLayout, frag).commit();
-        }
-        //setContentView(sampleView);
         //setContentView(R.layout.activity_main);
         //RequestQueue queue = Volley.newRequestQueue(this);
-       // String url = "https://raw.githubusercontent.com/usagitoneko97/dynamicLayoutTest/master/4buttonjson.json";
+        String url = "https://raw.githubusercontent.com/usagitoneko97/dynamicLayoutTest/master/4buttonjson.json";
         //mTextView.setText("Result: "+ mJSONObject.toString());
         //View sampleView = DynamicView.createView(this, mJSONObject, SampleViewHolder.class);
         //sampleView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
         //setContentView(sampleView);
 
+
+        getJsonObject(url, new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject result, View sampleView) {
+
+                led2 = ((ViewIds.SampleViewHolder)sampleView.getTag()).led2;
+                ledGreen = ((ViewIds.SampleViewHolder)sampleView.getTag()).ledGreen;
+                ledBlue = ((ViewIds.SampleViewHolder)sampleView.getTag()).ledBlue;
+                ledOrange = ((ViewIds.SampleViewHolder)sampleView.getTag()).ledOrange;
+            }
+        });
     }
 
+    public void getJsonObject ( String url ,final VolleyCallback callback){
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //mTextView.setText("Response: " + response.toString());
+                        mGson = new Gson();
+                        //mgsonResponse = mGson.fromJson(response.toString(),GsonResponse.class);
+                        View sampleView = DynamicView.createView(MainActivity.this, response, ViewIds.SampleViewHolder.class);
+                        sampleView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
+                        setContentView(sampleView);
+                        callback.onSuccess(response, sampleView);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // mTextView.setText("ERROR!!!!");
+                        // TODO Auto-generated method stub
+
+                    }
+                });
+        MySingleton.getInstance(this).addToRequestQueue(jsObjRequest);
+    }
 
 
 }
