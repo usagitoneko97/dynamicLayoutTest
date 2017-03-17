@@ -20,18 +20,22 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements RemoteDisplayLayout.getRemoteDisplayStatus  {
 
     private JSONObject mResult;
     private View sampleView;
     private Bundle viewBundle;
-    SimpleFragmentPagerAdapter pageAdapter;
+    private SimpleFragmentPagerAdapter pageAdapter;
     private ViewPager pager;
+    private List<Boolean>allLedStatus;
     Gson mGson;
    // GsonResponse mgsonResponse;
     JSONObject mJSONObject;
 
-
+    @Override
+    public void getAllLedStatus(List<Boolean> allLedStatus) {
+        this.allLedStatus = allLedStatus;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +47,6 @@ public class MainActivity extends AppCompatActivity  {
         //View sampleView = DynamicView.createView(this, mJSONObject, SampleViewHolder.class);
         //sampleView.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT));
         //setContentView(sampleView);
-
-
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
