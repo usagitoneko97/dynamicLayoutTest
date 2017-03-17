@@ -32,10 +32,10 @@ public class RemoteDisplayLayout extends Fragment implements View.OnClickListene
     private static final Object greenLedTag = 1;
     private static final Object blueLedTag = 2;
     private static final Object orangeLedTag = 3;
-    public final int LED2 =1;
-    public final int LED_GREEN =2;
-    public final int LED_BLUE = 3;
-    public final int LED_ORANGE = 4;
+    public final int LED2 =0;
+    public final int LED_GREEN =1;
+    public final int LED_BLUE = 2;
+    public final int LED_ORANGE = 3;
     private List<Boolean> allLedStatus = new ArrayList<>();
 
     public interface getRemoteDisplayStatus{
@@ -45,7 +45,10 @@ public class RemoteDisplayLayout extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        allLedStatus.add(LED2,false);
+        allLedStatus.add(LED_GREEN,false);
+        allLedStatus.add(LED_BLUE,false);
+        allLedStatus.add(LED_ORANGE,false);
     }
     @Override
     public void onAttach(Context context) {
