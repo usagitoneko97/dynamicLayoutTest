@@ -1,8 +1,5 @@
 package usagitoneko.volleytest;
 
-import android.app.DownloadManager;
-import android.graphics.Color;
-import android.support.annotation.MainThread;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,36 +8,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.util.List;
 
-import json2view.DynamicView;
-import json2view.DynamicViewId;
+public class MainActivity extends AppCompatActivity  {
 
-public class MainActivity extends AppCompatActivity {
-    private View led2;
-    private View ledBlue;
-    private View ledGreen;
-    private View ledOrange;
     private JSONObject mResult;
     private View sampleView;
     private Bundle viewBundle;
@@ -110,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-                final remoteDisplayLayout mainFragment = new remoteDisplayLayout();
+                final RemoteDisplayLayout mainFragment = new RemoteDisplayLayout();
                 mainFragment.setArguments(this.fragmentBundle);
                 return (mainFragment);
 
