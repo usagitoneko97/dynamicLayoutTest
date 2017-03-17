@@ -133,6 +133,7 @@ public class RemoteDisplayLayout extends Fragment implements View.OnClickListene
                     }
                 }
             });
+            mGetRemoteDisplayStatus.getAllLedStatus(allLedStatus);
             return firstFragmentView;
         }
         catch (JSONException e){
