@@ -28,16 +28,13 @@ public class RemoteDisplayLayout extends Fragment implements View.OnClickListene
     private View ledBlue;
     private View ledGreen;
     private View ledOrange;
-    private static final  Object led2Tag = 0;
-    private static final Object greenLedTag = 1;
-    private static final Object blueLedTag = 2;
-    private static final Object orangeLedTag = 3;
     public final int LED2 =0;
     public final int LED_GREEN =1;
     public final int LED_BLUE = 2;
     public final int LED_ORANGE = 3;
     private List<Boolean> allLedStatus = new ArrayList<>();
 
+    public RemoteDisplayLayout(){}
     public interface getRemoteDisplayStatus{
         public void getAllLedStatus (List<Boolean>allLedStatus);
     }
